@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 
@@ -34,7 +34,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:8080",
     "http://localhost:8080",
-    "http://127.0.0.1",
+    
   
 ]
 
@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'djoser',
 
     'apps.client',
+    'apps.invoice',
+    'apps.team'
 ]
 
 MIDDLEWARE = [

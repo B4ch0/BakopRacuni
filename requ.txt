@@ -1,3 +1,10 @@
 pip3 install djangorestframework
 pip install django-cors-headers
 pip install djoser
+
+ npm install bulma-toast
+
+
+ Username: code@code.com
+ codecode
+ admin/admin

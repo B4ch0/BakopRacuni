@@ -22,5 +22,5 @@ class ClientSerializer(serializers.ModelSerializer):
             "country",
             "contact_person",
             "contact_reference",
-            "invoices",
+            #"invoices",
         )
