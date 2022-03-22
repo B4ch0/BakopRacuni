@@ -1,16 +1,34 @@
+
+
 from rest_framework import serializers
 
 from .models import Invoice, Item
 
-
+class ItemSerializer(serializers.ModelSerializer):   
+    class Meta:
+        model = Item
+        read_only_fields = (
+            "invoice",
+        )
+        fields = (
+            "id",
+            "title",
+            "quantity",
+            "unit_price",
+            "net_amount",
+            "vat_rate",
+            "discount"
+        )   
 
 class InvoiceSerializer(serializers.ModelSerializer):
-    client = serializers.StringRelatedField()
+    items = ItemSerializer(many=True)
+   # bankaccount = serializers.CharField(required=False)     # ne radi placeno       #ne trazi od frontenda podatak
+    bankaccount = serializers.CharField(allow_blank=True, allow_null=True)
+
+    #client = serializers.StringRelatedField()
     #client = serializers.HyperlinkedRelatedField(view_name='client-detail')
  
     
-    
-
     class Meta:
         model = Invoice
         read_only_fields = (
@@ -46,23 +64,15 @@ class InvoiceSerializer(serializers.ModelSerializer):
             "discount_amount",
             "items",
             "bankaccount",
-            #"get_due_date_formatted",
+            "get_due_date_formatted",
            # "is_credit_for",
            # "is_credited",
         )
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        invoice = Invoice.objects.create(**validated_data)
 
-class ItemSerializer(serializers.ModelSerializer):   
-    class Meta:
-        model = Item
-        read_only_fields = (
-            "invoice",
-        )
-        fields = (
-            "id",
-            "title",
-            "quantity",
-            "unit_price",
-            "net_amount",
-            "vat_rate",
-            "discount"
-        )            
+        for item in items_data:
+            Item.objects.create(invoice=invoice, **item)
+        
+        return invoice    
